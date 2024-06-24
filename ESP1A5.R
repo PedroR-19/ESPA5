@@ -71,3 +71,35 @@ prob_rj <- pacientes_rj_apos_3semanas / total_rj
 
 cat("Probabilidade de pacientes de SP irem ao hospital após 3 semanas de sintomas:", prob_sp, "\n")
 cat("Probabilidade de pacientes de RJ irem ao hospital após 3 semanas de sintomas:", prob_rj, "\n")
+
+
+#Qual a probabilidade das pessoas que demoram mais de 3 semanas e vem de SP serem homens?
+pacientes_sp_mais_3semanas <- subset(dados, SG_UF_NOT == "SP" & SEM_PRI > 3 & CS_SEXO == "M")
+
+total_sp_mais_3semanas <- sum(dados$SG_UF_NOT == "SP" & dados$SEM_PRI > 3)
+
+probabilidade_sp_homem_mais_3semanas <- nrow(pacientes_sp_mais_3semanas) / total_sp_mais_3semanas
+
+
+
+#homens e mulheres quem são de SP de demoraram mais de 3 semanas para irem ao hospital após os sintomas
+
+pacientes_sp_mais_3semanas <- subset(dados, SG_UF_NOT == "SP" & SEM_PRI > 3)
+
+contagem_sexo <- table(pacientes_sp_mais_3semanas$CS_SEXO)
+
+sexos <- c("M", "F")
+
+contagem_sexo <- contagem_sexo[sexos]
+contagem_sexo[is.na(contagem_sexo)] <- 0
+
+df_contagem <- data.frame(Sexo = names(contagem_sexo), Contagem = as.vector(contagem_sexo))
+
+ggplot(data = df_contagem, aes(x = Sexo, y = Contagem, fill = Sexo)) +
+  geom_bar(stat = "identity") +
+  theme_minimal() +
+  labs(title = "Quantidade de Homens e Mulheres de SP que Demoraram Mais de 3 Semanas para ir ao Hospital",
+       x = "Sexo",
+       y = "Quantidade de Pacientes") +
+  scale_fill_manual(values = c("M" = "blue", "F" = "pink"))
+
