@@ -103,3 +103,18 @@ ggplot(data = df_contagem, aes(x = Sexo, y = Contagem, fill = Sexo)) +
        y = "Quantidade de Pacientes") +
   scale_fill_manual(values = c("M" = "blue", "F" = "pink"))
 
+#TESTE DE HIPOTEZE Hipótese: Existe uma diferença significativa na quantidade média de semanas com sintomas (SEM_PRI) entre pacientes de São Paulo (SP) e do Rio de Janeiro (RJ) que foram hospitalizados por SRAG.
+#Hipótese Nula (H0): A média de SEM_PRI para pacientes de SP é igual à média de SEM_PRI para pacientes de RJ.
+#Hipótese Alternativa (H1): A média de SEM_PRI para pacientes de SP é diferente da média de SEM_PRI para pacientes de RJ.
+
+dados_sp <- subset(dados, SG_UF_NOT == "SP")
+dados_rj <- subset(dados, SG_UF_NOT == "RJ")
+
+teste_t <- t.test(dados_sp$SEM_PRI, dados_rj$SEM_PRI)
+print(teste_t)
+
+if (teste_t$p.value < 0.05) {
+  cat("Rejeitamos a hipótese nula: há uma diferença significativa na quantidade média de semanas com sintomas entre pacientes de SP e RJ.\n")
+} else {
+  cat("Não rejeitamos a hipótese nula: não há diferença significativa na quantidade média de semanas com sintomas entre pacientes de SP e RJ.\n")
+}
